@@ -24,19 +24,34 @@ plt.scatter(grade_slow, bumpy_slow, color = "r", label="slow")
 plt.legend()
 plt.xlabel("bumpiness")
 plt.ylabel("grade")
-plt.show()
+# plt.show()
+print "just made graph"
 ################################################################################
 
 
 ### your code here!  name your classifier object clf if you want the 
 ### visualization code (prettyPicture) to show you the decision boundary
+from sklearn import ensemble
+from sklearn.metrics import accuracy_score
+from time import time
 
+# features_train = features_train[:len(features_train)/100]
+# labels_train = labels_train[:len(labels_train)/100]
+print "making classifier"
+clf = ensemble.RandomForestClassifier(n_estimators=20, min_samples_split=20)
 
+t0 = time()
+print "starting to train"
+clf.fit(features_train, labels_train)
+print "training time:", round(time()-t0, 3), "s"
 
+t0 = time()
+pred = clf.predict(features_test)
+print "prediction time:", round(time()-t0, 3), "s"
 
+acc = accuracy_score(labels_test, pred)
 
-
-
+print "accuracy: ", acc
 
 try:
     prettyPicture(clf, features_test, labels_test)
