@@ -26,18 +26,37 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5,
                              stop_words='english')
 features_train = vectorizer.fit_transform(features_train)
-features_test  = vectorizer.transform(features_test).toarray()
+features_test = vectorizer.transform(features_test).toarray()
 
 
 ### a classic way to overfit is to use a small number
 ### of data points and a large number of features;
 ### train on only 150 events to put ourselves in this regime
 features_train = features_train[:150].toarray()
-labels_train   = labels_train[:150]
-
+labels_train = labels_train[:150]
 
 
 ### your code goes here
+from sklearn import tree, metrics
+
+clf = tree.DecisionTreeClassifier()
+clf.fit(features_train, labels_train)
+pred = clf.predict(features_test)
+
+acc = metrics.accuracy_score(labels_test, pred)
+print acc
+mx = max(clf.feature_importances_)
+idxs = clf.feature_importances_ > .2
+print len(idxs)
+print mx
+foo = list(clf.feature_importances_)
+inx = foo.index(mx)
+print inx
+# print [i for i in range(0, len(clf.feature_importances_)) if clf.feature_importances_[i] == max(clf.feature_importances_)]
+# print features_train[:, clf.feature_importances_ > .2]
+features = vectorizer.get_feature_names()
+print [features[i] for i in range(0,len(features)) if idxs[i]]
+
 
 
 
