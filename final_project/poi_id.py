@@ -36,10 +36,7 @@ def main():
     for key in pca_keys:
         data_for_pca.append([data_dict[name][key] for name in data_dict.keys()])
 
-    print data_for_pca
-
     from sklearn.decomposition import PCA
-    # data_for_pca = np.array(zip(x, y, z))
     pca = PCA(n_components=1)
     transformed_data = pca.fit_transform(np.array(zip(*data_for_pca)))
 
